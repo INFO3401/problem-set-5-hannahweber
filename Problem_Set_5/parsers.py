@@ -2,37 +2,77 @@
 # PART #1
 # https://stackoverflow.com/questions/21107505/word-count-from-a-txt-file-program
 ################################################################################
-
-def countWordsUnstructured(filename):
-    wordcount = {}
-    file = open(filename)
-    for word in file.read().split():
-        if word not in wordcount:
-            wordcount[word] = 1
-        else:
-            wordcount[word] += 1
-    print (wordcount)
-        
+   
     # This function should count the words in an unstructured text document
     # Inputs: A file name (string)
     # Outputs: A dictionary with the counts for each word
     # +1 bonus point for removing punctuation from the wordcounts
     
+import string
+
+def countWordsUnstructured(filename):
+    wordCounts = {}
+    file = open(filename).read().split()
+    for word in file:
+        for mark in string.punctuation:
+            word = word.replace(mark, "")
+        if word not in wordCounts:
+            wordCounts[word] = 1
+        else:
+            wordCounts[word] += 1
+    print (wordCounts)
+    
+# Prof Danielle's solution    
+#def countWordsUnstructured(filename):
+    
+    #initialize a word count dictionary
+#    wordCounts = {}
+    
+    #open a file and read it
+#    datafile = open(filename).read()
+    
+    #open the file and read it
+#    data = datafile.split()
+    
+    #count the words
+#    for word in data:
+#        if word in wordCounts:
+#            wordCounts[word] = wordCounts[word] + 1
+#        else:
+#            wordCounts[word] = 1
+            
+    #return the word count dictionary
+#    return wordCounts
+
 # Test your part 1 code below.
+
+countWordsUnstructured("state-of-the-union-corpus-1989-2017/Bush_1989.txt")
 
 ################################################################################
 # PART 2
 ################################################################################
-    
-#def generateSimpleCSV(targetfile, wordCounts): 
+
     # This function should transform a dictionary containing word counts to a
     # CSV file. The first row of the CSV should be a header noting: 
     # Word, Count
     # Inputs: A word count list and a name for the target file
     # Outputs: A new CSV file named targetfile containing the wordcount data
+
+import csv 
+
+def generateSimpleCSV(targetfile, wordCounts): 
+    with open(targetfile, "w") as csv_file:
+        writer = csv.writer(csv_file)
+        writer.writerow(["word", "count"])
+    for key, value in wordCounts.items():
+        writer.writerow([key, value[0], value[1]])
+        
+# 
     
 # Test your part 2 code below
-    
+
+generateSimpleCSV('didthiswork', countWordsUnstructured("state-of-the-union-corpus-1989-2017/Bush_1989.txt"))
+
 ################################################################################
 # PART 3
 ################################################################################
@@ -90,4 +130,3 @@ def countWordsUnstructured(filename):
 # +1 bonus point for figuring out how many datapoints you had to process to 
 # compute this value
 
-countWordsUnstructured("state-of-the-union-corpus-1989-2017/Bush_1989.txt")
